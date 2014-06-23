@@ -19,10 +19,12 @@
 			<button type="submit" class="btn btn-primary">Upload</button>
 		</form>
 
-
-
 <?php
 if (isset($_FILES['file'])){
+	$path = 'images';
+	if (!file_exists($path)) {
+		mkdir($path, 0777);
+	}
 ?>
 <div class="row">
 <?php
@@ -32,14 +34,14 @@ if (isset($_FILES['file'])){
 	$filename = $_FILES['file']['name'];
 	//1 Mo = 2^20 octets = 1048576 octets
 	$max_size = 2097152;
-	$filename_orignal = 'img/' . $filename;
+	$filename_orignal = $path . '/' . $filename;
 
 	if ($error == 0){
 
 		$valid_extension  = array('jpg', 'jpeg', 'gif', 'png');
 		$upload_extention = strtolower(  substr(  strrchr($filename, '.')  ,1)  );
 		if ( in_array($upload_extention, $valid_extension) ){
-			$name = 'img/' . str_replace(' ', '_', $filename);
+			$name = $path.'/' . str_replace(' ', '_', $filename);
 			move_uploaded_file($_FILES['file']['tmp_name'], $name);
 
 			$image = '';
